@@ -5,10 +5,12 @@ import os
 import requests
 from langchain.tools import tool
 from crewai import Agent, Task, Crew, Process
-# from crewai_tools import tool
+from utils import create_trial_report, wrap_text_preserve_newlines, process_llm_response
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain.agents import load_tools
-
+from rag_pipeline import chunk_and_embed
+from crewai_tools import BaseTool
+import retrieval
 
 @tool("save_content")
 def save_content(task_output):
@@ -57,20 +59,8 @@ def clinical_trials_search(condition: str) -> str:
     raw_trials = response.json()
     
     study_details_list = []
-    # for study in raw_trials["studies"]:
-    #     protocol_section = study.get("protocolSection", {})
-    #     study_details_list.append({
-    #     "officialTitle": protocol_section.get("identificationModule", {}).get("officialTitle"),        
-    #     "eligibilityModule": protocol_section.get("eligibilityModule"),
-    #     "centralContacts": protocol_section.get("contactsLocationsModule", {}).get("centralContacts"),
-    #     "conditions": protocol_section.get("conditionsModule", {}).get("conditions"),
-    #     "armsInterventionsModule": protocol_section.get("armsInterventionsModule"),
-    #     "outcomesModule": protocol_section.get("outcomesModule"),
-    #     "designModule": protocol_section.get("designModule")
-    # })
-        
-    for i in range(0, 2):
-        protocol_section = raw_trials["studies"][i].get("protocolSection", {})
+    for study in raw_trials["studies"]:
+        protocol_section = study.get("protocolSection", {})
         study_details_list.append({
         "officialTitle": protocol_section.get("identificationModule", {}).get("officialTitle"),        
         "eligibilityModule": protocol_section.get("eligibilityModule"),
@@ -80,5 +70,50 @@ def clinical_trials_search(condition: str) -> str:
         "outcomesModule": protocol_section.get("outcomesModule"),
         "designModule": protocol_section.get("designModule")
     })
+        
+    # for i in range(0, 2):
+    #     protocol_section = raw_trials["studies"][i].get("protocolSection", {})
+    #     study_details_list.append({
+    #     "officialTitle": protocol_section.get("identificationModule", {}).get("officialTitle"),        
+    #     "eligibilityModule": protocol_section.get("eligibilityModule"),
+    #     "centralContacts": protocol_section.get("contactsLocationsModule", {}).get("centralContacts"),
+    #     "conditions": protocol_section.get("conditionsModule", {}).get("conditions"),
+    #     "armsInterventionsModule": protocol_section.get("armsInterventionsModule"),
+    #     "outcomesModule": protocol_section.get("outcomesModule"),
+    #     "designModule": protocol_section.get("designModule")
+    #     })
+
+    for index, trial in enumerate(study_details_list):
+        report_content = create_trial_report(trial)
+        with open(f"./studies/clinical_trial_report_{index + 1}.txt", "w") as file:
+            file.write(report_content)
+    chunk_and_embed()
     # Return the response in JSON format
-    return study_details_list
+    return "Clinical trials search completed."
+
+
+
+
+
+    
+@tool("chromadb_retrieval_tool")
+def chromadb_retrieval_tool(query: str) -> str:
+    """Fetches answers from a chromaDB vector store using LangChain's RetrievalQA chain."""
+    # query = "what are the best clinical trials for a patient with sarcoma that started in the stomach and has spread to the liver?"
+    print("QUERY FROM CONSULTANT::::", query)
+    qa_chain = retrieval.create_chain()
+    llm_response = qa_chain(query)
+    print("RESPONSE FROM CHROMADB::::", llm_response)
+    wrap_text_preserve_newlines(llm_response['result'])
+    sources = []
+    try:
+        for source in llm_response["source_documents"]:
+            sources.append(source)
+    except:
+        print("NO SOURCES??")
+        pass
+ 
+    return {
+        "answer": process_llm_response(llm_response),
+        "sources": sources
+    }

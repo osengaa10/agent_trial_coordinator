@@ -11,6 +11,7 @@ from pydantic import Extra
 from langchain.llms.base import LLM
 from langchain.utils import get_from_dict_or_env
 from langchain.llms import Together
+import textwrap
 
 load_dotenv()
 
@@ -21,6 +22,56 @@ together.api_key = os.environ["TOGETHER_API_KEY"]
 agent_finishes  = []
 
 call_number = 0
+
+
+
+def create_trial_report(trial):
+    """Generate a formatted string for a clinical trial report."""
+    # Safely access values, replacing None with 'Not available'
+    title = trial.get('officialTitle', 'Not available')
+    eligibility_criteria = trial['eligibilityModule'].get('eligibilityCriteria', 'Not available')
+    
+    report = f"Title: {title}\n\n"
+    report += "Eligibility Criteria:\n"
+    report += eligibility_criteria + "\n\n"
+    
+    report += "Contact Information:\n"
+    # Ensure centralContacts is iterable, default to empty list if None
+    for contact in trial.get('centralContacts', []) or []:
+        name = contact.get('name', 'Not available')
+        role = contact.get('role', 'Not available')
+        phone = contact.get('phone', 'Not available')
+        email = contact.get('email', 'Not available')
+        report += f"{name} - {role}\n"
+        report += f"Phone: {phone}, Email: {email}\n\n"
+    
+    # Ensure conditions is iterable, default to empty list if None
+    conditions = ", ".join([condition for condition in trial.get('conditions', []) if condition])
+    report += "Conditions:\n" + conditions + "\n\n"
+    
+    report += "Interventions:\n"
+    # Check if 'armsInterventionsModule' exists and is not None before accessing 'interventions'
+    interventions = (trial.get('armsInterventionsModule', {}) or {}).get('interventions', [])
+    for intervention in interventions:
+        intervention_type = intervention.get('type', 'Not available')
+        intervention_name = intervention.get('name', 'Not available')
+        description = intervention.get('description', 'Not available')
+        report += f"{intervention_type} - {intervention_name}: {description}\n"
+    
+    report += "\nPrimary Outcomes:\n"
+    # Ensure primaryOutcomes is iterable, default to empty list if None
+    for outcome in trial['outcomesModule'].get('primaryOutcomes', []) or []:
+        measure = outcome.get('measure', 'Not available')
+        description = outcome.get('description', 'Not available')
+        time_frame = outcome.get('timeFrame', 'Not available')
+        report += f"{measure}: {description} (Time frame: {time_frame})\n"
+    
+    return report
+
+
+
+
+
 
 def print_agent_output(agent_output: Union[str, List[Tuple[Dict, str]], AgentFinish], agent_name: str = 'Generic call'):
     global call_number  # Declare call_number as a global variable
@@ -67,43 +118,46 @@ def print_agent_output(agent_output: Union[str, List[Tuple[Dict, str]], AgentFin
 
 
 
-# class TogetherLLM(LLM):
-#     """Together large language models."""
-#     model: str = "togethercomputer/llama-2-70b-chat"
-#     """model endpoint to use"""
-#     together_api_key: str = os.environ["TOGETHER_API_KEY"]
-#     """Together API key"""
-#     temperature: float = 0.7
-#     """What sampling temperature to use."""
-#     max_tokens: int = 512
-#     """The maximum number of tokens to generate in the completion."""
-#     class Config:
-#         extra = Extra.forbid
-#     def validate_environment(cls, values: Dict) -> Dict:
-#         """Validate that the API key is set."""
-#         api_key = get_from_dict_or_env(
-#             values, "together_api_key", "TOGETHER_API_KEY"
-#         )
-#         values["together_api_key"] = api_key
-#         return values
-#     @property
-#     def _llm_type(self) -> str:
-#         """Return type of LLM."""
-#         return "together"
-#     def _call(
-#         self,
-#         prompt: str,
-#         **kwargs: Any,
-#     ) -> str:
-#         """Call to Together endpoint."""
-#         together.api_key = self.together_api_key
-#         output = together.Complete.create(prompt,
-#                                           model=self.model,
-#                                           max_tokens=self.max_tokens,
-#                                           temperature=self.temperature,
-#                                           )
-#         text = output['output']['choices'][0]['text']
-#         return text
+class TogetherLLM(LLM):
+    """Together large language models."""
+    model: str = "togethercomputer/llama-2-70b-chat"
+    """model endpoint to use"""
+    together_api_key: str = os.environ["TOGETHER_API_KEY"]
+    """Together API key"""
+    temperature: float = 0.7
+    """What sampling temperature to use."""
+    max_tokens: int = 512
+    """The maximum number of tokens to generate in the completion."""
+    class Config:
+        extra = Extra.forbid
+    def validate_environment(cls, values: Dict) -> Dict:
+        """Validate that the API key is set."""
+        api_key = get_from_dict_or_env(
+            values, "together_api_key", "TOGETHER_API_KEY"
+        )
+        values["together_api_key"] = api_key
+        return values
+    @property
+    def _llm_type(self) -> str:
+        """Return type of LLM."""
+        return "together"
+    def _call(
+        self,
+        prompt: str,
+        **kwargs: Any,
+    ) -> str:
+        """Call to Together endpoint."""
+        together.api_key = self.together_api_key
+        output = together.Complete.create(prompt,
+                                          model=self.model,
+                                          max_tokens=self.max_tokens,
+                                          temperature=self.temperature,
+                                          )
+        print("output:::::", output)
+        text = output['output']['choices'][0]['text']
+        return text
+
+
 
 
 
@@ -115,11 +169,11 @@ together_llm = Together(
     # together_api_key="..."
 )
 
-# together_llm = TogetherLLM(
-#     model= "mistralai/Mixtral-8x7B-Instruct-v0.1",
-#     temperature = 0.1,
-#     max_tokens = 30000,
-# )
+together_llm_rag = TogetherLLM(
+    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    temperature = 0.1,
+    max_tokens = 15000,
+)
 
 
 
@@ -129,3 +183,14 @@ ClaudeHaiku = ChatAnthropic(
     model="claude-3-haiku-20240307"
 )
 
+def wrap_text_preserve_newlines(text, width=110):
+    # Split the input text into lines based on newline characters
+    lines = text.split('\n')
+    # Wrap each line individually
+    wrapped_lines = [textwrap.fill(line, width=width) for line in lines]
+    # Join the wrapped lines back together using newline characters
+    wrapped_text = '\n'.join(wrapped_lines)
+    return wrapped_text
+
+def process_llm_response(llm_response):
+    return llm_response['result']
