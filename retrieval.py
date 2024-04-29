@@ -83,7 +83,9 @@ def create_chain():
     persist_directory = f'db'
     chain_type_kwargs = {"prompt": llama_prompt}
     vectordb = Chroma(embedding_function=configs.embedding,persist_directory=persist_directory)
-    retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 3})
+    print("==========VECTORDB==========")
+    retriever = vectordb.as_retriever(search_type="mmr", search_kwargs={"k": 5})
+    print("==========RETRIEVER==========")
     return RetrievalQA.from_chain_type(llm=utils.together_llm_rag,
                                         chain_type="stuff",
                                         retriever=retriever,

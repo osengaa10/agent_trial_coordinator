@@ -19,7 +19,7 @@ get_relevant_clinical_trials = Task(
 )
 
 create_medical_report = Task(
-    description='Converse with the human to gather information about their medical condition. Use this information to create a medical report for the Clinical Trials Coordinator.',
+    description='Converse with the human to gather information about their medical condition. Use this information to create a medical report for the Clinical Trials Coordinator. Ask the human as many questions as needed to build an informative report.',
     expected_output="""A short medical report containing the patient's medical condition and any relevant information for the Clinical Trials Coordinator.
     """,
     tools=human_tools,
@@ -50,9 +50,11 @@ curate_the_list = Task(
     # will provide the official title, contact info and an explanation on how the patient would be a good fit for the clinical trial.
     # """,
     description='Retrieve best clinical trials for patient.',
-    expected_output="""A prioritized list of the best clinical trials for the human. Each clinical trial has contact info, a title, and description on what makes them a good fit.
+    expected_output="""A prioritized list of the best clinical trials for the human. Each clinical trial has contact info, a title, description on what makes them a good fit
+    and what the risks and benefits are.
     """,
     tools=[chromadb_retrieval_tool],
+    context=[create_medical_report],
     agent=coordinator_agent
 )
 

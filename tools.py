@@ -51,7 +51,8 @@ def clinical_trials_search(condition: str) -> str:
         "format": "json",
         "markupFormat": "markdown",
         "query.cond": condition,
-        "filter.overallStatus": "RECRUITING"
+        "filter.overallStatus": "RECRUITING",
+        "pageToken": None
     }
     
     # Make the GET request
@@ -59,30 +60,37 @@ def clinical_trials_search(condition: str) -> str:
     raw_trials = response.json()
     
     study_details_list = []
-    for study in raw_trials["studies"]:
-        protocol_section = study.get("protocolSection", {})
-        study_details_list.append({
-        "officialTitle": protocol_section.get("identificationModule", {}).get("officialTitle"),        
-        "eligibilityModule": protocol_section.get("eligibilityModule"),
-        "centralContacts": protocol_section.get("contactsLocationsModule", {}).get("centralContacts"),
-        "conditions": protocol_section.get("conditionsModule", {}).get("conditions"),
-        "armsInterventionsModule": protocol_section.get("armsInterventionsModule"),
-        "outcomesModule": protocol_section.get("outcomesModule"),
-        "designModule": protocol_section.get("designModule")
-    })
-        
-    # for i in range(0, 2):
-    #     protocol_section = raw_trials["studies"][i].get("protocolSection", {})
-    #     study_details_list.append({
-    #     "officialTitle": protocol_section.get("identificationModule", {}).get("officialTitle"),        
-    #     "eligibilityModule": protocol_section.get("eligibilityModule"),
-    #     "centralContacts": protocol_section.get("contactsLocationsModule", {}).get("centralContacts"),
-    #     "conditions": protocol_section.get("conditionsModule", {}).get("conditions"),
-    #     "armsInterventionsModule": protocol_section.get("armsInterventionsModule"),
-    #     "outcomesModule": protocol_section.get("outcomesModule"),
-    #     "designModule": protocol_section.get("designModule")
-    #     })
+    counter = 0
+    while True:
+        # Make the GET request
+        response = requests.get(base_url, params=params)
+        # print("response: ", response)
+        if response.status_code != 200:
+            print(f"Failed to fetch data: {response.status_code}")
+            break  # Break the loop if there's an error in the response
 
+        raw_trials = response.json()
+        # Extract studies and append details to the list
+        for study in raw_trials["studies"]:
+            protocol_section = study.get("protocolSection", {})
+            study_details_list.append({
+                "officialTitle": protocol_section.get("identificationModule", {}).get("officialTitle"),        
+                "eligibilityModule": protocol_section.get("eligibilityModule"),
+                "centralContacts": protocol_section.get("contactsLocationsModule", {}).get("centralContacts"),
+                "conditions": protocol_section.get("conditionsModule", {}).get("conditions"),
+                "armsInterventionsModule": protocol_section.get("armsInterventionsModule"),
+                "outcomesModule": protocol_section.get("outcomesModule"),
+                "designModule": protocol_section.get("designModule")
+            })
+
+        # Update the pageToken to the next page token from the response, if any
+        nextPageToken = raw_trials.get("nextPageToken")
+        if not nextPageToken or counter > 7:
+            break
+        params["pageToken"] = nextPageToken
+        counter = counter + 1
+
+    print("Number of studies found:", len(study_details_list))
     for index, trial in enumerate(study_details_list):
         report_content = create_trial_report(trial)
         with open(f"./studies/clinical_trial_report_{index + 1}.txt", "w") as file:

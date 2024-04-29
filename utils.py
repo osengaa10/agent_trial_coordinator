@@ -154,7 +154,8 @@ class TogetherLLM(LLM):
                                           temperature=self.temperature,
                                           )
         print("output:::::", output)
-        text = output['output']['choices'][0]['text']
+        text = output['choices'][0]['text']
+        # print("text:::::", text)
         return text
 
 
@@ -171,7 +172,7 @@ together_llm = Together(
 
 together_llm_rag = TogetherLLM(
     model="mistralai/Mixtral-8x7B-Instruct-v0.1",
-    temperature = 0.1,
+    temperature = 0.3,
     max_tokens = 15000,
 )
 

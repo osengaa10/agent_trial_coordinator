@@ -38,15 +38,15 @@ trials_search_agent = Agent(
 
 patient_consultant_agent = Agent(
     role='Clinical Trials Consultant',
-    goal='Formulate a medical report for the Clinical Trials Coordinator based on information from the conversation with the human about their medical condition',
-    backstory="""As a praticing physician you will ask the human basic questions that will be relevant to determining clinical trial eligibility.
+    goal='Ask the human any questions needed to generate an informative medical report for the Clinical Trials Coordinator.',
+    backstory="""As a praticing physician you are able to ask the human questions and generate an informative report that will help the coordinator determine the best fit clinical trials.
     """,
     verbose=True,
     allow_delegation=False,
     # llm=ClaudeHaiku,
     llm=together_llm,
-    max_iter=5,
-    memory=True,
+    max_iter=10,
+    memory=False,
     step_callback=lambda x: print_agent_output(x,"===patient_consultant_agent==="),
     tools=human_tools, # Passing human tools to the agent,
 )
@@ -54,7 +54,7 @@ patient_consultant_agent = Agent(
 coordinator_agent = Agent(
     role='Clinical Trials Coordinator',
     # goal='Review clinical trials and make a list of the clinical trials that would be the best fit for the patient according to their prompt',
-    goal='Use the medical report to curate a list of the most relevant clinical trials for the patient. Review the eligibility requirements of the search results to determine best fit. If any additional context is needed to determine clinical trial eligibility, you may ask the human basic follow up questions about themselves or their condition. For each clinical trial in your list, you will provide the official title, contact info and an explanation on how the patient would be a good fit for the clinical trial.',
+    goal='Use the medical report to curate a list of the best clinical trials for the patient. Review the eligibility requirements of the search results to determine best fit. If any additional context is needed to determine clinical trial eligibility, you may ask the human basic follow up questions about themselves or their condition. For each clinical trial in your list, you will provide the official title, contact info and an explanation on how the patient would be a good fit for the clinical trial.',
     backstory="""As a renowned Medical Expert you have an exceptional ability to determine the most
     promising clinical trials when provided with a description of the patient's health issue.
     Your ability to match patients with clinical trials has saved many lives. Your reviews are
@@ -64,7 +64,7 @@ coordinator_agent = Agent(
     llm=together_llm,
     # llm=retrieval.create_chain(),
     verbose=True,
-    max_iter=2,
+    max_iter=3,
     memory=False,
     step_callback=lambda x: print_agent_output(x,"===coordinator_agent==="),
     allow_delegation=False,
