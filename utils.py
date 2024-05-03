@@ -163,7 +163,7 @@ class TogetherLLM(LLM):
 
 
 together_llm = Together(
-    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    model="mistralai/Mixtral-8x22B-Instruct-v0.1",
     temperature=0.4,
     max_tokens=15000,
     top_k=1,
@@ -171,9 +171,9 @@ together_llm = Together(
 )
 
 together_llm_rag = TogetherLLM(
-    model="mistralai/Mixtral-8x7B-Instruct-v0.1",
+    model="mistralai/Mixtral-8x22B-Instruct-v0.1",
     temperature = 0.3,
-    max_tokens = 15000,
+    max_tokens = 30000,
 )
 
 
