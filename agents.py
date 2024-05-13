@@ -46,7 +46,7 @@ patient_consultant_agent = Agent(
     # llm=ClaudeHaiku,
     llm=together_llm,
     max_iter=10,
-    memory=False,
+    memory=True,
     step_callback=lambda x: print_agent_output(x,"===patient_consultant_agent==="),
     tools=human_tools, # Passing human tools to the agent,
 )
@@ -65,7 +65,7 @@ coordinator_agent = Agent(
     # llm=retrieval.create_chain(),
     verbose=True,
     max_iter=3,
-    memory=False,
+    memory=True,
     step_callback=lambda x: print_agent_output(x,"===coordinator_agent==="),
     allow_delegation=False,
     tools=[chromadb_retrieval_tool],

@@ -9,3 +9,52 @@
 3. Clinical Trial Title: "Combination Chemotherapy for Advanced Sarcoma"
    Contact Information: (456) 789-0123, sarcomachemo@clinicaltrials.com
    Explanation: This clinical trial is a phase II study of a combination of chemotherapy drugs for patients with advanced sarcoma. The patient's sarcoma has spread to the liver, making them a good candidate for this trial. The combination of chemotherapy drugs has shown promise in early-stage trials for treating sarcoma, and it could potentially shrink the tumors in the patient's liver. The risks include potential side effects from the chemotherapy drugs, but the benefits could outweigh the risks if the combination of drugs is effective in treating the patient's sarcoma.
+
+
+
+
+
+
+
+I have retrieved information on several clinical trials that may be suitable for the patient. Here are the top clinical trials based on the patient's medical report:
+
+1. Title: A Phase II Clinical Trial Evaluating the Safety and Efficacy of Radioactive Particle and Fluzoparib Combination Therapy in the Treatment of Advanced Unresectable Soft Tissue Sarcoma
+   Contact Information: Not provided in the given information.
+   Description: This clinical trial is a Phase II study evaluating the safety and efficacy of radioactive particle and Fluzoparib combination therapy in the treatment of advanced unresectable soft tissue sarcoma. The eligibility criteria include patients who have received systemic therapy as the first-line treatment and have a single lesion ≤5cm and no more than 5 lesions.
+
+2. Title: A Prospective, Phase III Study to Assess the Efficacy and Safety of Microwave Ablation of Metastatic Lung Sarcoma Lesions.
+   Contact Information:
+   Guilherme Lopes Pinheiro Martins, MD - CONTACT
+   Phone: +551138932000, Email: guilherme.martins@hc.fm.usp.br
+   Lucas Fiore, MD - CONTACT
+   Phone: +551138932208, Email: lucas.fiore@hc.fm.usp.br
+   Description: This clinical trial is a prospective, Phase III study to assess the efficacy and safety of microwave ablation of metastatic lung sarcoma lesions. The eligibility criteria include patients over 18 years with lung metastases arising from sarcoma, who are not eligible for surgery for medical reasons.
+
+3. Title: A Multicenter Phase 1/2a, Open-Label Study of SQ3370 in Patients With Advanced Solid Tumors
+   Contact Information: Not provided in the given information.
+   Description: This clinical trial is a multicenter Phase 1/2a, open-label study of SQ3370 in patients with advanced solid tumors, including soft tissue sarcoma. The eligibility criteria include patients with a diagnosis of advanced soft tissue sarcoma or other solid tumors, adequate hematologic, hepatic, renal, and coagulation function, and an ECOG performance status score of 0-1.
+
+4. Title: Phase II Multicohort Trial of Trabectedin and Low-dose Radiation Therapy in Advanced/Metastatic Sarcomas
+   Contact Information: Not provided in the given information.
+   Description: This clinical trial is a Phase II multicohort trial of Trabectedin and low-dose radiation therapy in advanced/metastatic sarcomas. The eligibility criteria include patients with advanced/metastatic sarcomas who have received prior systemic therapy.
+
+Final Answer:
+1. Title: A Phase II Clinical Trial Evaluating the Safety and Efficacy of Radioactive Particle and Fluzoparib Combination Therapy in the Treatment of Advanced Unresectable Soft Tissue Sarcoma
+   Contact Information: Not provided in the given information.
+   Description: This clinical trial is a Phase II study evaluating the safety and efficacy of radioactive particle and Fluzoparib combination therapy in the treatment of advanced unresectable soft tissue sarcoma. The eligibility criteria include patients who have received systemic therapy as the first-line treatment and have a single lesion ≤5cm and no more than 5 lesions. The patient may be a good fit for this trial as they have been diagnosed with stage 4 soft tissue sarcoma and have metastasized to the liver. The patient is currently undergoing treatment with imatinib and may undergo surgery in the future.
+
+2. Title: A Prospective, Phase III Study to Assess the Efficacy and Safety of Microwave Ablation of Metastatic Lung Sarcoma Lesions.
+   Contact Information:
+   Guilherme Lopes Pinheiro Martins, MD - CONTACT
+   Phone: +551138932000, Email: guilherme.martins@hc.fm.usp.br
+   Lucas Fiore, MD - CONTACT
+   Phone: +551138932208, Email: lucas.fiore@hc.fm.usp.br
+   Description: This clinical trial is a prospective, Phase III study to assess the efficacy and safety of microwave ablation of metastatic lung sarcoma lesions. The eligibility criteria include patients over 18 years with lung metastases arising from sarcoma, who are not eligible for surgery for medical reasons. The patient may be a good fit for this trial as they have been diagnosed with stage 4 soft tissue sarcoma and have metastasized to the liver. The patient is currently undergoing treatment with imatinib and may undergo surgery in the future.
+
+3. Title: A Multicenter Phase 1/2a, Open-Label Study of SQ3370 in Patients With Advanced Solid Tumors
+   Contact Information: Not provided in the given information.
+   Description: This clinical trial is a multicenter Phase 1/2a, open-label study of SQ3370 in patients with advanced solid tumors, including soft tissue sarcoma. The eligibility criteria include patients with a diagnosis of advanced soft tissue sarcoma or other solid tumors, adequate hematologic, hepatic, renal, and coagulation function, and an ECOG performance status score of 0-1. The patient may be a good fit for this trial as they have been diagnosed with stage 4 soft tissue sarcoma and have metastasized to the liver. The patient is currently undergoing treatment with imatinib and may undergo surgery in the future.
+
+4. Title: Phase II Multicohort Trial of Trabectedin and Low-dose Radiation Therapy in Advanced/Metastatic Sarcomas
+   Contact Information: Not provided in the given information.
+   Description: This clinical trial is a Phase II multicohort trial of Trabectedin and low-dose radiation therapy in advanced/metastatic sarcomas. The eligibility criteria include patients with advanced/metastatic sarcomas who have received prior systemic therapy. The patient may be a good fit for this trial as they have been diagnosed with stage 4 soft tissue sarcoma and have metastasized to the liver. The patient is currently undergoing treatment with imatinib and may undergo surgery in the future.

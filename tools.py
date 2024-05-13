@@ -85,7 +85,7 @@ def clinical_trials_search(condition: str) -> str:
 
         # Update the pageToken to the next page token from the response, if any
         nextPageToken = raw_trials.get("nextPageToken")
-        if not nextPageToken or counter > 7:
+        if not nextPageToken or counter > 9:
             break
         params["pageToken"] = nextPageToken
         counter = counter + 1

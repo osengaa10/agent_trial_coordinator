@@ -42,6 +42,16 @@ def write_data_to_file(data, filename='output.txt'):
 # Print the results
 print("Crew Work Results:")
 print(results)
-# print(json.dump(results))
-write_data_to_file(results)
 
+
+
+# def write_dict_to_file(data, filename='output_dict.txt'):
+#     """Write dictionary data to a file in JSON format, appending to existing content."""
+#     with open(filename, 'a') as file:  # Use 'a' to append; change to 'w' if overwriting is needed
+#         # Convert the dictionary to a JSON-formatted string with indentation for readability
+#         formatted_data = json.dumps(data, indent=4)
+#         file.write(formatted_data)
+#         file.write("\n")
+
+write_data_to_file(results)
+# write_dict_to_file(results)
